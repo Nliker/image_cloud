@@ -18,25 +18,28 @@ class ImageDao:
     def get_image_link_by_user_id(self,user_id):
         rows=self.db.execute(text("""
             select 
-            link 
+            id,
+            link, 
             from images
             where user_id=:user_id
             """),{'user_id':user_id})  
         
-        data=[row['link'] for row in rows]
+        data=[{'id':row['id'],'link':row['link']} for row in rows]
         
         return data
     
     #사진의 링크를 get요청시 처리하기 위함
     def get_image_link_by_image_id(self,image_id):
-        rows=self.db.execute(text("""
-            select 
+        row=self.db.execute(text("""
+            select
+            id,
             link 
             from images
             where id=:image_id
             """),{'image_id':image_id})  
         
-        data=[row['link'] for row in rows]
-        
-        return data
+        return {
+            'id':row['id'],
+            'link':row['link']
+        } if row else None
            

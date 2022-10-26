@@ -17,7 +17,7 @@ def user_dao():
 def image_dao():
     return ImageDao(database)
 
-def setup_functuon():
+def setup_function():
     print("======teardown_function======")
     print("테이블 초기화중")
     database.execute(text("""
@@ -27,10 +27,7 @@ def setup_functuon():
         truncate users
     """))
     database.execute(text("""
-        truncate tweets
-    """))
-    database.execute(text("""
-        truncate users_follow_list
+        truncate images
     """))
     database.execute(text("""
         set foreign_key_checks=1
@@ -42,7 +39,7 @@ def setup_functuon():
 
     hashed_password=bcrypt.hashpw(
         b"test",
-        bcrypt.salt()
+        bcrypt.gensalt()
     )
     
     new_user={
@@ -54,24 +51,30 @@ def setup_functuon():
     }
     
     database.execute(text("""
-        isert into users (
+        insert into users (
             id,name,email,profile,hashed_password
         ) values (
             :id,:name,:email,:profile,:hashed_password
         )
     """),new_user)
     
-    new_image={
+    new_images=[{
         'id':1,
+        'user_id':1,
         'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
-    }
+    },{
+        'id':2,
+        'user_id':1,
+        'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0582.JPG"
+    }]
+    
     database.execute(text("""
         insert into images (
-            user_id,link
+            id,user_id,link
         ) values (
-            :user_id,:link
+            :id,:user_id,:link
         )
-    """),new_image)
+    """),new_images)
 
     print("샘플 데이터 저장 성공!")
     print("==========================")
@@ -86,16 +89,26 @@ def teardown_function():
         truncate users
     """))
     database.execute(text("""
-        truncate tweets
-    """))
-    database.execute(text("""
-        truncate users_follow_list
+        truncate images
     """))
     database.execute(text("""
         set foreign_key_checks=1
     """))
     print("테이블 초기화 완료!!!")
     print("==========================")
+
+def get_image(image_id):
+    row=database.execute(text("""
+        select id,user_id,link
+        from images
+        where id=:image_id
+    """),{'image_id':image_id}).fetchone()
+
+    return {
+        'id':row['id'],
+        'user_id':row['user_id'],
+        'link':row['link'],
+    } if row else None
 
 def get_user(user_id):
     row=database.execute(text("""
@@ -110,3 +123,87 @@ def get_user(user_id):
         'email':row['email'],
         'profile':row['profile']
     } if row else None
+    
+
+def test_insert_user(user_dao):
+    hashed_password=bcrypt.hashpw(
+        b"test",
+        bcrypt.gensalt()
+    )
+    new_user={
+        'name':'test2',
+        'email':'test2@naver.com',
+        'profile':'testuser2',
+        'hashed_password':hashed_password
+    }
+    assert user_dao.insert_user(user=new_user)==2
+
+    inserted_user=get_user(user_id=2)
+    assert inserted_user=={
+        'id':2,
+        'name':'test2',
+        'email':'test2@naver.com',
+        'profile':'testuser2'
+    }
+    
+# def test_get_user_id_and_password(user_dao):
+#     user_id=1
+#     user_credential=user_dao.get_user_id_and_password(user_id=user_id)
+#     assert ('id' in user_credential) and ('hashed_password' in user_credential)
+#     assert user_credential['id']==1
+
+#     password="test"
+    
+#     authorized=bcrypt.checkpw(password.encode('UTF-8'),user_credential['hashed_password'].encode('UTF-8'))
+    
+#     assert authorized ==True
+
+# def test_get_user_info(user_dao):
+#     user_info=user_dao.get_user_info(1)
+    
+#     assert user_info=={
+#         'id':1,
+#         'name':'test1',
+#         'email':'test1@naver.com',
+#         'profile':'testuser1'
+#     }
+
+# def test_insert_image(image_dao):
+#     user_id=1
+#     test_link="http://test.com"
+#     inserted_image_id=image_dao.insert_image(user_id=user_id,link=test_link)
+    
+#     assert type(inserted_image_id)==type(1)
+    
+#     inserted_image=get_image(inserted_image_id)
+    
+#     assert inserted_image=={
+#         'id':inserted_image_id,
+#         'link':test_link,
+#         'user_id':user_id
+#     }
+    
+# def test_get_image_link_by_user_id(image_dao):
+#     user_id=1
+    
+#     user_images=image_dao.get_image_link_by_user_id(user_id=user_id)
+    
+#     assert user_images==[
+#         {
+#             'id':1,
+#             'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
+#         },
+#         {
+#             'id':2,
+#             'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0582.JPG"
+#         }
+#     ]
+# def test_get_image_link_by_image_id(image_dao):
+#     image_id=1
+    
+#     image=image_dao.get_image_link_by_image_id(1)
+    
+#     assert image=={
+#         'id':image_id,
+#         'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
+#     }

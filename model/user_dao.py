@@ -30,7 +30,7 @@ class UserDao:
         return {
             'id':row['id'],
             'hashed_password':row['hashed_password']
-        }
+        } if row else None
     
     def get_user_info(self,user_id):
         row=self.db.execute(text("""
@@ -48,5 +48,5 @@ class UserDao:
             'name':row['name'],
             'email':row['email'],
             'profile':row['profile'],
-        }
+        } if row else None
         
