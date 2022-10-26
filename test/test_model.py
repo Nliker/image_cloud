@@ -146,27 +146,27 @@ def test_insert_user(user_dao):
         'profile':'testuser2'
     }
     
-# def test_get_user_id_and_password(user_dao):
-#     user_id=1
-#     user_credential=user_dao.get_user_id_and_password(user_id=user_id)
-#     assert ('id' in user_credential) and ('hashed_password' in user_credential)
-#     assert user_credential['id']==1
+def test_get_user_id_and_password(user_dao):
+    email="test1@naver.com"
+    user_credential=user_dao.get_user_id_and_password(email=email)
+    assert ('id' in user_credential) and ('hashed_password' in user_credential)
+    assert user_credential['id']==1
 
-#     password="test"
+    password="test"
     
-#     authorized=bcrypt.checkpw(password.encode('UTF-8'),user_credential['hashed_password'].encode('UTF-8'))
+    authorized=bcrypt.checkpw(password.encode('UTF-8'),user_credential['hashed_password'].encode('UTF-8'))
     
-#     assert authorized ==True
+    assert authorized ==True
 
-# def test_get_user_info(user_dao):
-#     user_info=user_dao.get_user_info(1)
+def test_get_user_info(user_dao):
+    user_info=user_dao.get_user_info(1)
     
-#     assert user_info=={
-#         'id':1,
-#         'name':'test1',
-#         'email':'test1@naver.com',
-#         'profile':'testuser1'
-#     }
+    assert user_info=={
+        'id':1,
+        'name':'test1',
+        'email':'test1@naver.com',
+        'profile':'testuser1'
+    }
 
 # def test_insert_image(image_dao):
 #     user_id=1

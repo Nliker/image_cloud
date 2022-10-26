@@ -38,10 +38,10 @@ class UserDao:
             id,
             name,
             email,
-            profile,
+            profile
             from users
             where id=:user_id
-        """),{'user_id':user_id})
+        """),{'user_id':user_id}).fetchone()
         
         return {
             'id':row['id'],
