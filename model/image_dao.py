@@ -19,10 +19,10 @@ class ImageDao:
         rows=self.db.execute(text("""
             select 
             id,
-            link, 
+            link
             from images
             where user_id=:user_id
-            """),{'user_id':user_id})  
+            """),{'user_id':user_id}).fetchall()
         
         data=[{'id':row['id'],'link':row['link']} for row in rows]
         
@@ -36,7 +36,7 @@ class ImageDao:
             link 
             from images
             where id=:image_id
-            """),{'image_id':image_id})  
+            """),{'image_id':image_id}).fetchone()
         
         return {
             'id':row['id'],

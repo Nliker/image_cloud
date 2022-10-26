@@ -168,42 +168,43 @@ def test_get_user_info(user_dao):
         'profile':'testuser1'
     }
 
-# def test_insert_image(image_dao):
-#     user_id=1
-#     test_link="http://test.com"
-#     inserted_image_id=image_dao.insert_image(user_id=user_id,link=test_link)
+def test_insert_image(image_dao):
+    user_id=1
+    test_link="http://test.com"
+    inserted_image_id=image_dao.insert_image(user_id=user_id,link=test_link)
     
-#     assert type(inserted_image_id)==type(1)
+    assert type(inserted_image_id)==type(1)
     
-#     inserted_image=get_image(inserted_image_id)
+    inserted_image=get_image(inserted_image_id)
     
-#     assert inserted_image=={
-#         'id':inserted_image_id,
-#         'link':test_link,
-#         'user_id':user_id
-#     }
+    assert inserted_image=={
+        'id':inserted_image_id,
+        'link':test_link,
+        'user_id':user_id
+    }
     
-# def test_get_image_link_by_user_id(image_dao):
-#     user_id=1
+def test_get_image_link_by_user_id(image_dao):
+    user_id=1
     
-#     user_images=image_dao.get_image_link_by_user_id(user_id=user_id)
+    user_images=image_dao.get_image_link_by_user_id(user_id=user_id)
     
-#     assert user_images==[
-#         {
-#             'id':1,
-#             'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
-#         },
-#         {
-#             'id':2,
-#             'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0582.JPG"
-#         }
-#     ]
-# def test_get_image_link_by_image_id(image_dao):
-#     image_id=1
+    assert user_images==[
+        {
+            'id':1,
+            'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
+        },
+        {
+            'id':2,
+            'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0582.JPG"
+        }
+    ]
+
+def test_get_image_link_by_image_id(image_dao):
+    image_id=1
     
-#     image=image_dao.get_image_link_by_image_id(1)
+    image=image_dao.get_image_link_by_image_id(image_id=image_id)
     
-#     assert image=={
-#         'id':image_id,
-#         'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
-#     }
+    assert image=={
+        'id':1,
+        'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
+    }
