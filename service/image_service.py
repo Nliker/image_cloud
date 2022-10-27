@@ -1,6 +1,6 @@
 import os
 
-class Image_Service:
+class ImageService:
     def __init__(self,image_dao,config):
         self.image_dao=image_dao
         self.config=config
@@ -10,8 +10,10 @@ class Image_Service:
         upload_path=self.config['IMAGE_PATH']
         image_path_and_name=f"{upload_path}{filename}"
         image.save(image_path_and_name)
+        
+        link=f"{self.config['IMAGE_URL']}/image/{user_id}"
 
-        new_image_id=self.image_dao.insert_image(user_id,link=image_path_and_name)
+        new_image_id=self.image_dao.insert_image(user_id,link)
         return new_image_id
 
     def get_user_image_links(self,user_id):
