@@ -1,2 +1,0 @@
-def UserRouter(app,service):
-    

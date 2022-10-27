@@ -19,7 +19,7 @@ def create_app(test_config=None):
     else:
         app.config.update(test_config)
     
-    database=create_engine(config.test_config['DB_URL'],encoding='utf-8',max_overflow=0)
+    database=create_engine(config.config['DB_URL'],encoding='utf-8',max_overflow=0)
     print("데이터베이스 연결 성공!")
     
     @app.route("/ping",methods=["GET"])
@@ -32,7 +32,7 @@ def create_app(test_config=None):
     services=Services
     
     services.user_service=UserServices(user_dao,config=app.config)
-    services.image_service=ImageServices(image_dao)
+    services.image_service=ImageServices(image_dao,config=app.config)
 
     UserRoute(app,services)
     ImageRoute(app,services)
