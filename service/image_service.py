@@ -11,8 +11,8 @@ class Image_Service:
         image_path_and_name=f"{upload_path}{filename}"
         image.save(image_path_and_name)
 
-        result=self.image_dao.insert_image(user_id,link=image_path_and_name)
-        return result
+        new_image_id=self.image_dao.insert_image(user_id,link=image_path_and_name)
+        return new_image_id
 
     def get_user_image_links(self,user_id):
         return self.image_dao.get_image_link_by_image_id(user_id)
