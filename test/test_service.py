@@ -133,7 +133,7 @@ def get_image(image_id):
     
 def test_get_user_id_and_password(user_service):
     user_credential=user_service.get_user_id_and_password(email='test1@naver.com')
-    assert user_credential and user_credential['id']==1
+    assert user_credential is not None and user_credential['id']==1
     
 def test_create_new_user(user_service):
     new_user={
@@ -160,6 +160,7 @@ def test_login(user_service):
 def test_generate_access_token(user_service):
     user_id=1
     token=user_service.generate_access_token(user_id)
+    assert token is not None
     decoded_payload=jwt.decode(token,config.test_config['JWT_SECRET_KEY'],'HS256')
 
     assert decoded_payload['user_id']==user_id
@@ -195,6 +196,6 @@ def test_get_user_image_links(image_service):
 def test_get_image_info(image_service):
     image_id=1
     
-    image_info=image_service.test_get_image_info(image_id)
+    image_info=image_service.get_image_info(image_id)
     assert image_info==get_image(image_id)
     

@@ -1,4 +1,3 @@
-import config
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
@@ -11,10 +10,10 @@ class UserService:
         self.config=config
         
     def get_user_id_and_password(self,email):
-        return self.user_dao.get_user_id_and_password
+        return self.user_dao.get_user_id_and_password(email)
     
     def create_new_user(self,new_user):
-        new_user['password']=bcrypt.hashpw(
+        new_user['hashed_password']=bcrypt.hashpw(
             new_user['password'].encode('utf-8'),bcrypt.gensalt()
         )
 
@@ -36,3 +35,4 @@ class UserService:
         }
         
         token=jwt.encode(payload,self.config['JWT_SECRET_KEY'],'HS256')
+        return token
