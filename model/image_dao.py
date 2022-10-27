@@ -15,7 +15,7 @@ class ImageDao:
         """),{'user_id':user_id,'link':link}).lastrowid
     
     #유저의 사진 목록들을 get 요청시 처리하기 위함
-    def get_image_link_by_user_id(self,user_id):
+    def get_image_links_by_user_id(self,user_id):
         rows=self.db.execute(text("""
             select 
             id,
@@ -33,13 +33,15 @@ class ImageDao:
         row=self.db.execute(text("""
             select
             id,
-            link 
+            link,
+            user_id 
             from images
             where id=:image_id
             """),{'image_id':image_id}).fetchone()
         
         return {
             'id':row['id'],
-            'link':row['link']
+            'link':row['link'],
+            'user_id':row['user_id']
         } if row else None
            

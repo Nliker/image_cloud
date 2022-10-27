@@ -186,7 +186,7 @@ def test_insert_image(image_dao):
 def test_get_image_link_by_user_id(image_dao):
     user_id=1
     
-    user_images=image_dao.get_image_link_by_user_id(user_id=user_id)
+    user_images=image_dao.get_image_links_by_user_id(user_id=user_id)
     
     assert user_images==[
         {
@@ -206,5 +206,6 @@ def test_get_image_link_by_image_id(image_dao):
     
     assert image=={
         'id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG"
+        'link':f"{config.test_config['IMAGE_URL']}/user/1/image/IMG_0626.JPG",
+        'user_id':1
     }
