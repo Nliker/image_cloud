@@ -15,7 +15,7 @@ database=create_engine(config.test_config['DB_URL'],encoding='utf-8',max_overflo
 @pytest.fixture
 def user_service():
     return UserService(UserDao(database),config.test_config)
-
+@pytest.fixture
 def image_service():
     return ImageService(ImageDao(database),config.test_config)
 
@@ -63,11 +63,11 @@ def setup_function():
     new_images=[{
         'id':1,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/1"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
     },{
         'id':2,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/2"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
     }]
     
     database.execute(text("""
@@ -175,7 +175,7 @@ def test_save_image(image_service):
     assert new_image_info=={
         'id':new_image_id,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/{new_image_id}"
+        'link':f"{config.test_config['IMAGE_URL']}/{filename}"
     }
     
 def test_get_user_image_links(image_service):
@@ -185,12 +185,16 @@ def test_get_user_image_links(image_service):
     assert image_links==[
         {
             'id':1,
-            'link':f"{config.test_config['IMAGE_URL']}/1"
+            'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
         },{
             'id':2,
-            'link':f"{config.test_config['IMAGE_URL']}/2"
+            'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
         }
     ]
     
 def test_get_image_info(image_service):
+    image_id=1
+    
+    image_info=image_service.test_get_image_info(image_id)
+    assert image_info==get_image(image_id)
     

@@ -61,11 +61,11 @@ def setup_function():
     new_images=[{
         'id':1,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/1"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
     },{
         'id':2,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/2"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
     }]
     
     database.execute(text("""
@@ -191,11 +191,11 @@ def test_get_image_link_by_user_id(image_dao):
     assert user_images==[
         {
             'id':1,
-            'link':f"{config.test_config['IMAGE_URL']}/1"
+            'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
         },
         {
             'id':2,
-            'link':f"{config.test_config['IMAGE_URL']}/2"
+            'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
         }
     ]
 
@@ -206,6 +206,6 @@ def test_get_image_link_by_image_id(image_dao):
     
     assert image=={
         'id':image_id,
-        'link':f"{config.test_config['IMAGE_URL']}/{image_id}",
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG",
         'user_id':1
     }
