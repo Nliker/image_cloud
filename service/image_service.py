@@ -8,7 +8,7 @@ class ImageService:
     #route("/image POST")
     def save_image(self,image,filename,user_id):
         upload_path=self.config['IMAGE_PATH']
-        image_path_and_name=f"{upload_path}{filename}"
+        image_path_and_name=f"{upload_path}/{user_id}/{filename}"
         image.save(image_path_and_name)
         
         link=f"{self.config['IMAGE_URL']}/{filename}"

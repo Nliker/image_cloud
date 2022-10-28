@@ -1,5 +1,4 @@
-from flask import request
-from json import jsonify
+from flask import request,jsonify
 import sys,os
 sys.path.append((os.path.dirname(os.path.abspath(os.path.dirname(__file__)))))
 from auth import login_required,g
@@ -30,7 +29,7 @@ def image_route(app,services):
         else:
             return '권한이 없습니다.',401
         
-    @app.route("/user/<int:user_id>")
+    @app.route("/user/<int:user_id>",methods=["GET"])
     def user(user_id):
         user_info=user_service.get_user_info(user_id)
         
