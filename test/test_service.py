@@ -183,7 +183,19 @@ def test_save_image(image_service):
         'user_id':1,
         'link':f"{config.test_config['IMAGE_URL']}/{filename}"
     }
-    
+
+def test_get_image_links(image_service):
+    image_links=image_service.get_image_links(0,2)
+    new_images=[{
+        'id':1,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
+    },{
+        'id':2,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
+    }]
+    assert image_links==new_images
+
+
 def test_get_user_image_links(image_service):
     user_id=1
     image_links=image_service.get_user_image_links(user_id)

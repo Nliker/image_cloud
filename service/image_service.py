@@ -16,8 +16,8 @@ class ImageService:
         new_image_id=self.image_dao.insert_image(user_id,link)
         return new_image_id
 
-    def get_image_links(self,user_id):
-        return self.image_dao.get_
+    def get_image_links(self,start,end):
+        return self.image_dao.get_image_links(start,end)
     
     def get_user_image_links(self,user_id):
         return self.image_dao.get_image_links_by_user_id(user_id)
