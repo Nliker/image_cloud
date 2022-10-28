@@ -6,9 +6,17 @@ from tool import generate_random_sting
 
 def image_router(app,services):
     image_service=services.image_service
-    # @app.route("/images",methods=["GET"])
-    # @login_required
-    # def images():
+    
+    #start,end(원하는 페이지 만큼 불러오기)
+    @app.route("/images",methods=["GET"])
+    @login_required
+    def images():
+        pages=request.json
+        start=pages['start']
+        end=pages['end']
+        image_links=image_service.get_image_links(start,end)
+
+        return jsonify({'images':image_links}),200
         
     # @app.route("/image",methods=["POST"])
     # @login_required
@@ -35,8 +43,8 @@ def image_router(app,services):
     @app.route("/user/<int:user_id>/images",methods=["GET"])
     @login_required
     def user_images(user_id):
-        images_info=image_service.get_user_image_links(user_id)
-        return jsonify({'user_id':user_id,'images':images_info}),200
+        images_links=image_service.get_user_image_links(user_id)
+        return jsonify({'user_id':user_id,'images':images_links}),200
         
     @app.route("/images/<int:image_id>",methods=["GET"])
     @login_required
