@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from model import UserDao,ImageDao
+from service import UserService,ImageService
 from view import UserRoute,ImageRoute
 import config
 
@@ -31,8 +32,8 @@ def create_app(test_config=None):
 
     services=Services
     
-    services.user_service=UserServices(user_dao,config=app.config)
-    services.image_service=ImageServices(image_dao,config=app.config)
+    services.user_service=UserService(user_dao,config=app.config)
+    services.image_service=ImageService(image_dao,config=app.config)
 
     UserRoute(app,services)
     ImageRoute(app,services)

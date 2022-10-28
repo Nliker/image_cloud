@@ -165,6 +165,11 @@ def test_generate_access_token(user_service):
 
     assert decoded_payload['user_id']==user_id
 
+def test_get_user_info(user_service):
+    user_id=1
+    user_info=user_service.get_user_info(user_id)
+    assert get_user(user_id)==user_info
+
 def test_save_image(image_service):
     image=mock.Mock()
     filename="test.png"
@@ -198,4 +203,4 @@ def test_get_image_info(image_service):
     
     image_info=image_service.get_image_info(image_id)
     assert image_info==get_image(image_id)
-    
+
