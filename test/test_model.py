@@ -182,7 +182,18 @@ def test_insert_image(image_dao):
         'link':test_link,
         'user_id':user_id
     }
-    
+
+def test_get_image_links(image_dao):
+    image_links=image_dao.get_image_links(0,2)
+    new_images=[{
+        'id':1,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
+    },{
+        'id':2,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
+    }]
+    assert image_links==new_images
+
 def test_get_image_link_by_user_id(image_dao):
     user_id=1
     
