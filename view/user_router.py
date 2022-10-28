@@ -1,5 +1,8 @@
 from flask import request
 from json import jsonify
+import sys,os
+sys.path.append((os.path.dirname(os.path.abspath(os.path.dirname(__file__)))))
+from auth import login_required,g
 
 def image_route(app,services):
     user_service=services.user_service
