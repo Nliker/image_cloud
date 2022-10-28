@@ -3,7 +3,7 @@ from flask_cors import CORS
 from sqlalchemy import create_engine
 from model import UserDao,ImageDao
 from service import UserService,ImageService
-from view import UserRoute,ImageRoute
+from view import user_router,image_router
 import config
 
 class Services:
@@ -35,8 +35,8 @@ def create_app(test_config=None):
     services.user_service=UserService(user_dao,config=app.config)
     services.image_service=ImageService(image_dao,config=app.config)
 
-    UserRoute(app,services)
-    ImageRoute(app,services)
+    user_router(app,services)
+    image_router(app,services)
     
 
     @app.route("/ping",methods=["GET"])

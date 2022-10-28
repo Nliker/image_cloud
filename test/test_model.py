@@ -61,18 +61,20 @@ def setup_function():
     new_images=[{
         'id':1,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG",
+        'public':1
     },{
         'id':2,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG",
+        'public':0
     }]
     
     database.execute(text("""
         insert into images (
-            id,user_id,link
+            id,user_id,link,public
         ) values (
-            :id,:user_id,:link
+            :id,:user_id,:link,:public
         )
     """),new_images)
 
@@ -171,7 +173,7 @@ def test_get_user_info(user_dao):
 def test_insert_image(image_dao):
     user_id=1
     test_link="http://test.com"
-    inserted_image_id=image_dao.insert_image(user_id=user_id,link=test_link)
+    inserted_image_id=image_dao.insert_image(user_id=user_id,link=test_link,public=1)
     
     assert type(inserted_image_id)==type(1)
     
@@ -180,7 +182,7 @@ def test_insert_image(image_dao):
     assert inserted_image=={
         'id':inserted_image_id,
         'link':test_link,
-        'user_id':user_id
+        'user_id':user_id,
     }
 
 def test_get_image_links(image_dao):
@@ -188,28 +190,23 @@ def test_get_image_links(image_dao):
     new_images=[{
         'id':1,
         'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
-    },{
-        'id':2,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
     }]
     assert image_links==new_images
 
 def test_get_image_link_by_user_id(image_dao):
     user_id=1
     
-    user_images=image_dao.get_image_links_by_user_id(user_id=user_id,start=0,end=2)
+    user_images=image_dao.get_image_links_by_user_id(user_id=user_id,start=0,end=2,public=1)
     
-    assert user_images==[
-        {
-            'id':1,
-            'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
-        },
-        {
-            'id':2,
-            'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
-        }
-    ]
-
+    assert user_images==[{
+        'id':1,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
+    }]
+    user_images=image_dao.get_image_links_by_user_id(user_id=user_id,start=0,end=2,public=0)
+    assert user_images==[{
+        'id':2,
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
+    }]
 def test_get_image_link_by_image_id(image_dao):
     image_id=1
     

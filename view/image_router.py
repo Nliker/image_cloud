@@ -7,21 +7,18 @@ from tool import generate_random_sting
 def image_router(app,services):
     image_service=services.image_service
     
-    #start,end(원하는 페이지 만큼 불러오기)
+    #start,end(원하는 페이지 만큼 불러오기),public(공용 or 사용)
     @app.route("/images",methods=["GET"])
     @login_required
     def images():
-        pages=request.json
-        start=pages['start']
-        end=pages['end']
+        payload=request.json
+        start=payload['start']
+        end=payload['end']
+        public=payload['public']
         image_links=image_service.get_image_links(start,end)
 
         return jsonify({'images':image_links}),200
-        
-    # @app.route("/image",methods=["POST"])
-    # @login_required
-    # def image():
-        
+    
     #image in files
     @app.route("/user/<int:user_id>/image",methods=["POST"])
     @login_required
@@ -32,14 +29,16 @@ def image_router(app,services):
         if 'image' not in request.files or request.files['image'].filename=='':
             return 'file is missing',404
 
+        pulbic=request.json['public']
         image=request.files['image']
+        
         extender=str(image.split('.')[1])
         filename=generate_random_sting(10)+'.'+extender
-        result=image_service.save_image(image,filename,user_id)
+        result=image_service.save_image(image,filename,user_id,public)
 
         return f"{result}이미지를 저장 완료하였습니다.",200
 
-    #회원인 유저들은 모든 사진에 접근 가능
+    #회원인 유저는 공용 상태인 사진에 모두 접근 가능
     @app.route("/user/<int:user_id>/images",methods=["GET"])
     @login_required
     def user_images(user_id):

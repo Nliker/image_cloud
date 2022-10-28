@@ -63,18 +63,20 @@ def setup_function():
     new_images=[{
         'id':1,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG",
+        'public':1
     },{
         'id':2,
         'user_id':1,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
+        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG",
+        'public':0
     }]
     
     database.execute(text("""
         insert into images (
-            id,user_id,link
+            id,user_id,link,public
         ) values (
-            :id,:user_id,:link
+            :id,:user_id,:link,:public
         )
     """),new_images)
 
@@ -175,7 +177,7 @@ def test_save_image(image_service):
     filename="test.png"
     user_id=1
     
-    new_image_id=image_service.save_image(image,filename,user_id)
+    new_image_id=image_service.save_image(image,filename,user_id,public=1)
     new_image_info=get_image(image_id=new_image_id)
 
     assert new_image_info=={
@@ -189,26 +191,26 @@ def test_get_image_links(image_service):
     new_images=[{
         'id':1,
         'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
-    },{
-        'id':2,
-        'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
     }]
     assert image_links==new_images
 
 
 def test_get_user_image_links(image_service):
     user_id=1
-    image_links=image_service.get_user_image_links(user_id,start=0,end=2)
+    image_links=image_service.get_user_image_links(user_id,start=0,end=2,public=1)
     
     assert image_links==[
         {
             'id':1,
             'link':f"{config.test_config['IMAGE_URL']}/IMG_0582.JPG"
-        },{
+        }]
+    
+    image_links=image_service.get_user_image_links(user_id,start=0,end=2,public=0)
+    
+    assert image_links==[{
             'id':2,
             'link':f"{config.test_config['IMAGE_URL']}/IMG_0626.JPG"
-        }
-    ]
+        }]
     
 def test_get_image_info(image_service):
     image_id=1
