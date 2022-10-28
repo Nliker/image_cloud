@@ -198,7 +198,7 @@ def test_get_image_links(image_service):
 
 def test_get_user_image_links(image_service):
     user_id=1
-    image_links=image_service.get_user_image_links(user_id)
+    image_links=image_service.get_user_image_links(user_id,start=0,end=2)
     
     assert image_links==[
         {

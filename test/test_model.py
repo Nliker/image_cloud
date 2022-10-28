@@ -197,7 +197,7 @@ def test_get_image_links(image_dao):
 def test_get_image_link_by_user_id(image_dao):
     user_id=1
     
-    user_images=image_dao.get_image_links_by_user_id(user_id=user_id)
+    user_images=image_dao.get_image_links_by_user_id(user_id=user_id,start=0,end=2)
     
     assert user_images==[
         {

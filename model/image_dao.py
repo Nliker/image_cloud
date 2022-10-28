@@ -30,14 +30,15 @@ class ImageDao:
 
         return data
     
-    def get_image_links_by_user_id(self,user_id):
+    def get_image_links_by_user_id(self,user_id,start,end):
         rows=self.db.execute(text("""
             select 
             id,
             link
             from images
             where user_id=:user_id
-            """),{'user_id':user_id}).fetchall()
+            limit :start,:end
+            """),{'user_id':user_id,'start':start,'end':end}).fetchall()
         
         data=[{'id':row['id'],'link':row['link']} for row in rows]
         

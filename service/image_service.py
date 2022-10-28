@@ -19,8 +19,8 @@ class ImageService:
     def get_image_links(self,start,end):
         return self.image_dao.get_image_links(start,end)
     
-    def get_user_image_links(self,user_id):
-        return self.image_dao.get_image_links_by_user_id(user_id)
+    def get_user_image_links(self,user_id,start,end):
+        return self.image_dao.get_image_links_by_user_id(user_id,start,end)
 
     def get_image_info(self,image_id):
         return self.image_dao.get_image_link_by_image_id(image_id)
